@@ -299,7 +299,7 @@ android.allow_backup = True
 # you can do so with the manifestPlaceholders property.
 # This property takes a map of key-value pairs. (via a string)
 # Usage example : android.manifest_placeholders = [myCustomUrl:\"org.kivy.customurl\"]
-android.manifest_placeholders = custom_permissions=./manifest/notification_service.xml
+android.extra_manifest_xml = ./manifest/notification_service.xml
 
 # (bool) Skip byte compile for .py files
 # android.no-byte-compile-python = False
