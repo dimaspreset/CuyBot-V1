@@ -1,27 +1,39 @@
+#:import Window kivy.core.window.Window
+#:import dp kivy.metrics.dp
+
 <WhiteBlueButton@MDRaisedButton>
-    md_bg_color: 1, 1, 1, 1
-    text_color: 0, 0.5, 1, 1
+    md_bg_color: 0.137, 0.129, 0.302, 1  # Sama seperti card
+    text_color: 1, 1, 1, 1
     on_press:
-        self.md_bg_color = (0, 0.5, 1, 1)
-        self.text_color = (1, 1, 1, 1)
+        self.md_bg_color = (0.643, 0.525, 0.976, 1)  # #a486f9 saat ditekan
     on_release:
-        self.md_bg_color = (1, 1, 1, 1)
-        self.text_color = (0, 0.5, 1, 1)
+        self.md_bg_color = (0.137, 0.129, 0.302, 1)  # Kembali ke default
     size_hint: 1, None
     height: dp(48)
     elevation: 0
 
-
 <HomeScreen>:
     MDBoxLayout:
         orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: 23/255, 26/255, 56/255, 1  # #171a38
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
         MDBoxLayout:
             orientation: "horizontal"
             size_hint_y: None
             height: "56dp"
             padding: "10dp"
-            md_bg_color: 0, 0.5, 1, 1
+            md_bg_color: 35/255, 33/255, 77/255, 1  # #23214d
+            canvas.after:
+                Color:
+                    rgba: 0.643, 0.525, 0.976, 1
+                Rectangle:
+                    size: self.width, 0.5  # Ganti dari dp(1) jadi 1 pixel langsung
+                    pos: self.x, self.y
 
             MDLabel:
                 text: "CUYBOT V1"
@@ -47,6 +59,8 @@
                     font_name: "Titillium Web Bold"
                     size_hint_y: None
                     height: self.texture_size[1] + dp(12)
+                    theme_text_color: "Custom"
+                    text_color: 1, 1, 1, 1
 
                 GridLayout:
                     cols: 2
@@ -59,94 +73,85 @@
                         padding: dp(10)
                         size_hint_y: None
                         height: dp(80)
+                        md_bg_color: 35/255, 33/255, 77/255, 1
                         MDLabel:
-                            text: "Koneksi"
+                            text: "Status"
                             halign: "center"
                             font_name: "Titillium Web"
+                            theme_text_color: "Custom"
+                            text_color: 1, 1, 1, 1
                         MDLabel:
-                            text: "Connected"
+                            text: "Disconnected"
                             halign: "center"
                             font_name: "Titillium Web Bold"
                             bold: True
+                            theme_text_color: "Custom"
+                            text_color: 1, 1, 1, 1
 
                     MDCard:
                         orientation: "vertical"
                         padding: dp(10)
                         size_hint_y: None
                         height: dp(80)
+                        md_bg_color: 35/255, 33/255, 77/255, 1
                         MDLabel:
                             text: "Baterai"
                             halign: "center"
                             font_name: "Titillium Web"
+                            theme_text_color: "Custom"
+                            text_color: 1, 1, 1, 1
                         MDLabel:
-                            text: "98%"
+                            text: "- %"
                             halign: "center"
                             font_name: "Titillium Web Bold"
                             bold: True
+                            theme_text_color: "Custom"
+                            text_color: 1, 1, 1, 1
 
                     MDCard:
                         orientation: "vertical"
                         padding: dp(10)
                         size_hint_y: None
                         height: dp(80)
+                        md_bg_color: 35/255, 33/255, 77/255, 1
                         MDLabel:
                             text: "Volume"
                             halign: "center"
                             font_name: "Titillium Web"
+                            theme_text_color: "Custom"
+                            text_color: 1, 1, 1, 1
                         MDLabel:
-                            text: "70%"
+                            text: "- dB"
                             halign: "center"
                             font_name: "Titillium Web Bold"
                             bold: True
+                            theme_text_color: "Custom"
+                            text_color: 1, 1, 1, 1
 
                     MDCard:
                         orientation: "vertical"
                         padding: dp(10)
                         size_hint_y: None
                         height: dp(80)
+                        md_bg_color: 35/255, 33/255, 77/255, 1
                         MDLabel:
-                            text: "Mode Mata"
+                            text: "Mode"
                             halign: "center"
                             font_name: "Titillium Web"
+                            theme_text_color: "Custom"
+                            text_color: 1, 1, 1, 1
                         MDLabel:
-                            text: "Smile"
+                            text: "manual"
                             halign: "center"
-                            bold: True
                             font_name: "Titillium Web Bold"
+                            bold: True
+                            theme_text_color: "Custom"
+                            text_color: 1, 1, 1, 1
 
-                    MDCard:
-                        orientation: "vertical"
-                        padding: dp(10)
-                        size_hint_y: None
-                        height: dp(80)
-                        MDLabel:
-                            text: "Navigasi"
-                            halign: "center"
-                            font_name: "Titillium Web"
-                        MDLabel:
-                            text: "Kanan"
-                            halign: "center"
-                            bold: True
-                            font_name: "Titillium Web Bold"
-
-                    MDCard:
-                        orientation: "vertical"
-                        padding: dp(10)
-                        size_hint_y: None
-                        height: dp(80)
-                        MDLabel:
-                            text: "Power"
-                            halign: "center"
-                            font_name: "Titillium Web"
-                        MDLabel:
-                            text: "ON"
-                            halign: "center"
-                            bold: True
-                            font_name: "Titillium Web Bold"
 
                 GridLayout:
                     cols: 2
-                    spacing: dp(10)
+                    spacing: dp(0.5)
                     padding: [0, 0, 0, 0]
                     size_hint_x: 1
                     size_hint_y: None
@@ -157,7 +162,7 @@
                         size_hint_y: None
                         height: dp(60)
                         WhiteBlueButton:
-                            text: "Aktifkan Notif"
+                            text: "Mode Default"
                             size_hint_x: 1
                             font_name: "Titillium Web Bold"
 
@@ -166,7 +171,7 @@
                         size_hint_y: None
                         height: dp(60)
                         WhiteBlueButton:
-                            text: "Aktifkan Cuaca"
+                            text: "Mode Smile"
                             size_hint_x: 1
                             font_name: "Titillium Web Bold"
 
@@ -175,7 +180,7 @@
                         size_hint_y: None
                         height: dp(60)
                         WhiteBlueButton:
-                            text: "Aktifkan Navigasi"
+                            text: "Mode Angry"
                             size_hint_x: 1
                             font_name: "Titillium Web Bold"
 
@@ -184,7 +189,25 @@
                         size_hint_y: None
                         height: dp(60)
                         WhiteBlueButton:
-                            text: "Aktifkan Jam"
+                            text: "Mode Blink"
+                            size_hint_x: 1
+                            font_name: "Titillium Web Bold"
+
+                    MDBoxLayout:
+                        padding: dp(10)
+                        size_hint_y: None
+                        height: dp(60)
+                        WhiteBlueButton:
+                            text: "Mode Cyclops"
+                            size_hint_x: 1
+                            font_name: "Titillium Web Bold"
+                            
+                    MDBoxLayout:
+                        padding: dp(10)
+                        size_hint_y: None
+                        height: dp(60)
+                        WhiteBlueButton:
+                            text: "Mode Curious"
                             size_hint_x: 1
                             font_name: "Titillium Web Bold"
 
@@ -193,13 +216,36 @@
                     height: dp(260)
                     size_hint_x: 1 
                     radius: [12, 12, 12, 12]
-                    md_bg_color: app.theme_cls.bg_dark
+                    md_bg_color: 35/255, 33/255, 77/255, 1
                     padding: dp(8)
 
-                    MDLabel:
-                        text: "Preview OLED (Video Simulasi)"
-                        halign: "center"
-                        font_name: "Titillium Web Bold"
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        spacing: dp(10)
+                        padding: dp(10)
+
+                        MDLabel:
+                            text: "Preview Notifikasi"
+                            halign: "center"
+                            font_name: "Titillium Web Bold"
+                            theme_text_color: "Custom"
+                            text_color: 1, 1, 1, 1
+                            font_style: "H6"
+
+                        MDLabel:
+                            text: root.notif_title
+                            theme_text_color: "Custom"
+                            text_color: 1, 1, 1, 1
+                            font_name: "Titillium Web Bold"
+                            halign: "left"
+                            font_style: "Subtitle1"
+
+                        MDLabel:
+                            text: root.notif_text
+                            theme_text_color: "Secondary"
+                            halign: "left"
+                            font_style: "Body2"
+
         
 
         MDBoxLayout:
@@ -207,21 +253,28 @@
             size_hint_y: None
             height: "56dp"
             spacing: dp(56)
-            md_bg_color: 0, 0.5, 1, 1  # Warna biru seperti button
+            md_bg_color: 35/255, 33/255, 77/255, 1  # #23214d
             padding: "0dp"
             pos_hint: {"bottom": 1}
+            canvas.before:
+                Color:
+                    rgba: 0.643, 0.525, 0.976, 1  # warna #a486f9
+                Rectangle:
+                    size: self.width, 0.5
+                    pos: self.x, self.top 
 
-            Widget:  # Spacer kiri
+            Widget:
 
+    
             MDIconButton:
-                icon: "home"
+                icon: "cog"
                 icon_size: "28sp"
                 theme_text_color: "Custom"
                 text_color: 1, 1, 1, 1
 
             MDIconButton:
-                icon: "cog"
-                icon_size: "28sp"
+                icon: "home"
+                icon_size: "38sp"
                 theme_text_color: "Custom"
                 text_color: 1, 1, 1, 1
 
@@ -231,5 +284,4 @@
                 theme_text_color: "Custom"
                 text_color: 1, 1, 1, 1
 
-            Widget:  # Spacer kanan
-
+            Widget:
