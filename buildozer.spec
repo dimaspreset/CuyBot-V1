@@ -4,10 +4,10 @@
 title = CuyBot 
 
 # (str) Package name
-package.name = myapp
+package.name = cuybot
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.test
+package.domain = org.kivy
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3==3.8.5,hostpython3==3.8.5,kivy,kivymd,pillow,pygments,pyjnius
+requirements = python3==3.8.5,hostpython3==3.8.5,kivy,kivymd,pillow,pyjnius
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -95,13 +95,13 @@ fullscreen = 0
 
 # (list) Permissions
 # (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-android.permissions = android.permission.INTERNET, android.permission.WRITE_EXTERNAL_STORAGE, android.permission.READ_EXTERNAL_STORAGE, android.permission.RECEIVE_BOOT_COMPLETED
+android.permissions = BIND_NOTIFICATION_LISTENER_SERVICE, RECEIVE_BOOT_COMPLETED
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-#android.api = 31
+android.api = 33
 
 # (int) Minimum API your APK / AAB will support.
 #android.minapi = 21
@@ -299,7 +299,17 @@ android.allow_backup = True
 # you can do so with the manifestPlaceholders property.
 # This property takes a map of key-value pairs. (via a string)
 # Usage example : android.manifest_placeholders = [myCustomUrl:\"org.kivy.customurl\"]
-android.extra_manifest_xml = ./manifest/notification_service.xml
+android.manifest.service = """
+<service
+    android:name="org.kivy.cuybot.NotificationService"
+    android:label="CUYBOT Notification Service"
+    android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="android.service.notification.NotificationListenerService" />
+    </intent-filter>
+</service>
+"""
 
 # (bool) Skip byte compile for .py files
 # android.no-byte-compile-python = False
@@ -450,6 +460,3 @@ warn_on_root = 1
 #    Then, invoke the command line with the "demo" profile:
 #
 #buildozer --profile demo android debug
-
-android.services = notificationlistener:notification_listener.py
-android.foreground_services = notificationlistener
