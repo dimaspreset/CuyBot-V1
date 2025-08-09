@@ -299,17 +299,10 @@ android.allow_backup = True
 # you can do so with the manifestPlaceholders property.
 # This property takes a map of key-value pairs. (via a string)
 # Usage example : android.manifest_placeholders = [myCustomUrl:\"org.kivy.customurl\"]
-android.manifest.service = """
-<service
+android.manifest.service = """<service
     android:name="org.kivy.cuybot.NotificationService"
-    android:label="CUYBOT Notification Service"
-    android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-    android:exported="true">
-    <intent-filter>
-        <action android:name="android.service.notification.NotificationListenerService" />
-    </intent-filter>
-</service>
-"""
+    android:enabled="true"
+    android:exported="false" />"""
 
 # (bool) Skip byte compile for .py files
 # android.no-byte-compile-python = False
