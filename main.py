@@ -13,4 +13,5 @@ class CuyBotApp(MDApp):
     def on_start(self):
         start_notification_listener()
 
-CuyBotApp().run()
+if __name__ == '__main__':
+    CuyBotApp().run()
