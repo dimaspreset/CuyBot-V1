@@ -95,7 +95,7 @@ fullscreen = 0
 
 # (list) Permissions
 # (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-android.permissions = BIND_NOTIFICATION_LISTENER_SERVICE, RECEIVE_BOOT_COMPLETED
+android.permissions = ["BIND_NOTIFICATION_LISTENER_SERVICE", "INTERNET"]
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
@@ -301,8 +301,15 @@ android.allow_backup = True
 # Usage example : android.manifest_placeholders = [myCustomUrl:\"org.kivy.customurl\"]
 android.manifest.service = """<service
     android:name="org.kivy.cuybot.NotificationService"
+    android:label="Notification Service"
+    android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
     android:enabled="true"
-    android:exported="false" />"""
+    android:exported="true">
+    <intent-filter>
+        <action android:name="android.service.notification.NotificationListenerService" />
+    </intent-filter>
+</service>"""
+
 
 # (bool) Skip byte compile for .py files
 # android.no-byte-compile-python = False
