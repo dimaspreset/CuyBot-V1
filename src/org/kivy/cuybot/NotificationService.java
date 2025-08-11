@@ -26,18 +26,18 @@ public class NotificationService extends NotificationListenerService {
                 text = m != null ? m.toString() : "";
             }
 
-            Log.d("CUYBOT", "onNotificationPosted: " + pkg + " | " + title + " | " + text);
+            Log.d("cuybot", "onNotificationPosted: " + pkg + " | " + title + " | " + text);
 
             if (callback != null) {
                 callback.onNotificationReceived(pkg, title, text);
             }
         } catch (Exception e) {
-            Log.e("CUYBOT", "Error in onNotificationPosted", e);
+            Log.e("cuybot", "Error in onNotificationPosted", e);
         }
     }
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
-        Log.d("CUYBOT", "onNotificationRemoved: " + sbn.getPackageName());
+        Log.d("cuybot", "onNotificationRemoved: " + sbn.getPackageName());
     }
 }

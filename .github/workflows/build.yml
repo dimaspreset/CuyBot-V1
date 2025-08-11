@@ -31,13 +31,18 @@ jobs:
           path: .buildozer
           key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
 
+      - name: Clean with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        with:
+          command: buildozer android clean
+          buildozer_version: stable
+
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
         with:
           command: buildozer android debug
           buildozer_version: stable
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
