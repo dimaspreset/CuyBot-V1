@@ -1,46 +1,93 @@
-name: CI
+name: Android CI
 
 on:
   push:
+    branches: [ main ]
+  pull_request:
     branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Get Date
-        id: get-date
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Install system dependencies
         run: |
-          echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
-        shell: bash
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-pip \
+            python3-setuptools \
+            zlib1g-dev \
+            unzip \
+            git \
+            autoconf \
+            build-essential
 
-      - name: Cache Buildozer global directory
-        uses: actions/cache@v4
-        with:
-          path: .buildozer_global
-          key: buildozer-global-${{ hashFiles('buildozer.spec') }}
+      - name: Install Buildozer
+        run: |
+          pip install --user buildozer
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Cache .buildozer directory
-        uses: actions/cache@v4
-        with:
-          path: .buildozer
-          key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
+      - name: Clean build environment
+        run: |
+          rm -rf .buildozer
+          rm -rf ~/.gradle/caches
 
-      - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
+      - name: Cache Buildozer dependencies
+        uses: actions/cache@v3
         with:
-          command: |
-            buildozer android clean
-            buildozer android debug
-          buildozer_version: stable
+          path: |
+            ~/.buildozer
+            ~/.android
+            ~/.gradle
+          key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
+          restore-keys: |
+            ${{ runner.os }}-buildozer-
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+      - name: Pre-download Android components
+        run: |
+          buildozer android update sdk --accept-licenses --yes
+          buildozer android update ndk
+
+      - name: Build APK
+        id: build_apk
+        run: |
+          buildozer android clean
+          buildozer -v android debug 2>&1 | tee build.log
+          if ls bin/*.apk 1> /dev/null 2>&1; then
+            echo "built=true" >> $GITHUB_OUTPUT
+          else
+            echo "built=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Verify AndroidManifest.xml
+        run: |
+          sudo apt-get install -y libxml2-utils
+          xmllint --format src/main/AndroidManifest.xml
+          xmllint --noout src/main/AndroidManifest.xml
+
+      - name: Upload APK artifact
+        if: steps.build_apk.outputs.built == 'true'
+        uses: actions/upload-artifact@v3
         with:
-          name: package
-          path: ${{ steps.buildozer.outputs.filename }}
+          name: CuyBot-APK
+          path: bin/*.apk
+
+      - name: Upload build logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Build-Logs
+          path: |
+            build.log
+            .buildozer/android/platform/build-*/dists/cuybot/build/outputs/logs/

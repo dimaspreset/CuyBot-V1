@@ -107,10 +107,10 @@ android.api = 33
 android.minapi = 21
 
 # (int) Android SDK version to use
-#android.sdk = 33
+android.sdk = 33
 
 # (str) Android NDK version to use
-#android.ndk = 23b
+android.ndk = 23b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 #android.ndk_api = 21
@@ -203,12 +203,12 @@ services = NotificationService:org.kivy.cuybot.NotificationService
 #android.add_resources =
 
 # (list) Gradle dependencies to add
-#android.gradle_dependencies =
+android.gradle_dependencies = 'com.android.tools.build:gradle:7.2.2'
 
 # (bool) Enable AndroidX support. Enable when 'android.gradle_dependencies'
 # contains an 'androidx' package, or any package from Kotlin source.
 # android.enable_androidx requires android.api >= 28
-#android.enable_androidx = True
+android.enable_androidx = True
 
 # (list) add java compile options
 # this can for example be necessary when importing certain java libraries using the 'android.gradle_dependencies' option
@@ -301,7 +301,7 @@ android.allow_backup = True
 # you can do so with the manifestPlaceholders property.
 # This property takes a map of key-value pairs. (via a string)
 # Usage example : android.manifest_placeholders = [myCustomUrl:\"org.kivy.customurl\"]
-android.extra_manifest_xml = src/main/AndroidManifest.xml
+android.manifest = src/main/AndroidManifest.xml
 
 
 # (bool) Skip byte compile for .py files
