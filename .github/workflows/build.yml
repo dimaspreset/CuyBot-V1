@@ -1,24 +1,22 @@
-name: Android CI
+name: CI
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
     branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
+      # used to cache dependencies with a timeout
       - name: Get Date
         id: get-date
         run: |
-          echo "date=$(/bin/date -u '+%Y%m%d')" >> $GITHUB_OUTPUT
+          echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
         shell: bash
 
       - name: Cache Buildozer global directory
@@ -34,29 +32,14 @@ jobs:
           key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
 
       - name: Build with Buildozer
-        id: build_apk
         uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
         with:
-          command: |
-            buildozer android clean
-            buildozer -v android debug 2>&1 | tee build.log
-            if ls bin/*.apk 1> /dev/null 2>&1; then
-              echo "built=true" >> $GITHUB_OUTPUT
-            else
-              echo "built=false" >> $GITHUB_OUTPUT
-            fi
+          command: buildozer android debug
           buildozer_version: stable
 
-      - name: Upload APK artifact
-        if: steps.build_apk.outputs.built == 'true'
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: CuyBot-APK
-          path: bin/*.apk
-
-      - name: Upload build logs
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: Build-Logs
-          path: build.log
+          name: package
+          path: ${{ steps.buildozer.outputs.filename }}
