@@ -60,14 +60,11 @@ jobs:
           buildozer android update ndk
 
       - name: Build APK
-        id: build_apk
         run: |
           buildozer android clean
           buildozer -v android debug 2>&1 | tee build.log
-          if ls bin/*.apk 1> /dev/null 2>&1; then
-            echo "built=true" >> $GITHUB_OUTPUT
-          else
-            echo "built=false" >> $GITHUB_OUTPUT
+          if [ -f bin/*.apk ]; then
+            echo "APK_BUILT=true" >> $GITHUB_ENV
           fi
 
       - name: Verify AndroidManifest.xml
@@ -77,7 +74,7 @@ jobs:
           xmllint --noout src/main/AndroidManifest.xml
 
       - name: Upload APK artifact
-        if: steps.build_apk.outputs.built == 'true'
+        if: env.APK_BUILT == 'true'
         uses: actions/upload-artifact@v3
         with:
           name: CuyBot-APK
