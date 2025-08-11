@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3==3.8.5,hostpython3==3.8.5,kivy,kivymd,pillow,pyjnius
+requirements = python3==3.8.5,hostpython3==3.8.5,kivy,kivymd,pillow,pyjnius,android
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -95,7 +95,8 @@ fullscreen = 0
 
 # (list) Permissions
 # (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-android.permissions = BIND_NOTIFICATION_LISTENER_SERVICE, RECEIVE_BOOT_COMPLETED
+android.permissions = BIND_NOTIFICATION_LISTENER_SERVICE, RECEIVE_BOOT_COMPLETED, FOREGROUND_SERVICE, POST_NOTIFICATIONS
+services = NotificationService:org.kivy.cuybot.NotificationService
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
@@ -299,7 +300,7 @@ android.allow_backup = True
 # you can do so with the manifestPlaceholders property.
 # This property takes a map of key-value pairs. (via a string)
 # Usage example : android.manifest_placeholders = [myCustomUrl:\"org.kivy.customurl\"]
-android.manifest = src/main/AndroidManifest.xml
+android.extra_manifest_xml = src/main/AndroidManifest.xml
 
 
 # (bool) Skip byte compile for .py files
