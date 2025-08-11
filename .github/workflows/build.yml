@@ -12,7 +12,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # used to cache dependencies with a timeout
       - name: Get Date
         id: get-date
         run: |
@@ -35,7 +34,9 @@ jobs:
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
         with:
-          command: buildozer android debug
+          command: |
+            buildozer android clean
+            buildozer android debug
           buildozer_version: stable
 
       - name: Upload artifacts
